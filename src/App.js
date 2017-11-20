@@ -2,16 +2,28 @@ import React from 'react';
 import BookShelf from './BookShelf';
 import './App.css';
 import { Route } from 'react-router-dom';
-import SearchBook from './SearchBook'
+import SearchBook from './SearchBook';
+import * as BooksAPI from './BooksAPI'
+
 
 class BooksApp extends React.Component {
-  state = {
+   state = {
+      books : []
+   }
 
-  }
+   componentDidMount() {
+      BooksAPI.getAll().then(data => {
+         this.setState({
+            books: data
 
-  render() {
-    return (
-      <div className="app">
+         });
+      });
+      console.log(this.books);
+   }
+
+   render() {
+      return (
+         <div className="app">
             <Route exact path="/" render={ () => (
                <BookShelf
                />
@@ -25,8 +37,8 @@ class BooksApp extends React.Component {
                />
             )}/>
          </div>
-    )
-  }
+      )
+   }
 }
 
 export default BooksApp
