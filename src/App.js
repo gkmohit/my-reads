@@ -1,44 +1,19 @@
-import React from 'react';
-import BookShelf from './BookShelf';
-import './App.css';
-import { Route } from 'react-router-dom';
-import SearchBook from './SearchBook';
-import * as BooksAPI from './BooksAPI'
+import React, { Component } from 'react'
+import { Route } from 'react-router-dom'
+import BookList from './components/BookList'
+import BookSearch from './components/BookSearch'
 
+import './App.css'
 
-class BooksApp extends React.Component {
-   state = {
-      books : []
-   }
-
-   componentDidMount() {
-      BooksAPI.getAll().then(data => {
-         this.setState({
-            books: data
-
-         });
-      });
-      console.log(this.books);
-   }
-
-   render() {
-      return (
-         <div className="app">
-            <Route exact path="/" render={ () => (
-               <BookShelf
-               />
-            )}/>
-            <Route path="/search" render={ () => (
-               <SearchBook
-                  onCreateContact={ (contact) => {
-                     //this.createContact(contact)
-                     //history.push('/')
-                  }}
-               />
-            )}/>
-         </div>
-      )
-   }
+class BooksApp extends Component {
+    render() {
+        return(
+            <div className="app">
+                <Route exact path="/" component={BookList} />
+                <Route path="/search" component={BookSearch} />
+            </div>
+        );
+    }
 }
 
 export default BooksApp
