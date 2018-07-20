@@ -29,7 +29,7 @@ class BookSearch extends Component {
           }  
         })
       } else {
-        this.setState( { books: null });
+        this.setState( { books: [] });
       }
     }
 
@@ -53,7 +53,9 @@ class BookSearch extends Component {
     render() {
       let booksList;
 
-      if (this.state.books.length > 0) {
+      
+
+      if (this.state.books && this.state.books.length > 0) {
         booksList = this.state.books.map((book, index) => {
           this.state.currentBooks.forEach(currentbook => {
             if(currentbook.id === book.id) {

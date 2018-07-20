@@ -48,8 +48,8 @@ class BookShelf extends Component {
                 currentlyReading.push(book);
             } else if( book.shelf === 'wantToRead' ) {
                 wantToRead.push(book)
-            } else {
-                read.push(book)
+            } else if( book.shelf === 'read' ) {
+                read.push(book);  
             }
         })
         
