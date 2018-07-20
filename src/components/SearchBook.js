@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const AddBook = () => {
+const SearchBook = () => {
     return(
         <div className="open-search">
-            <Link to="/search">Add  a book</Link>
+            <Link to="/search">Add book</Link>
         </div>
     )
 }
 
-export default AddBook;
+export default SearchBook;

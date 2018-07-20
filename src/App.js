@@ -5,7 +5,7 @@ import BookSearch from './components/BookSearch'
 
 import './App.css'
 
-class BooksApp extends Component {
+class App extends Component {
     render() {
         return(
             <div className="app">
@@ -16,4 +16,4 @@ class BooksApp extends Component {
     }
 }
 
-export default BooksApp
+export default App

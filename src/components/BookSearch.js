@@ -14,88 +14,83 @@ class BookSearch extends Component {
     componentDidMount() {
       BooksAPI.getAll()
         .then(books => {
-          // Get rid of all other properties except book id
-          const booksId = books.map(book => ({ id: book.id,shelf: book.shelf }))
-          this.setState({ currentBooks: booksId })
+          const booksId = books.map(book => ({ id: book.id, shelf: book.shelf }));
+          this.setState({ currentBooks: booksId });
         })
     }
 
-    onSearch = (event) => {
-      const value = event.target.value
-      
-      if(value) {
-        BooksAPI.search(value).then(books => {
+    search = (event) => {
+      if(event.target.value) {
+        BooksAPI.search(event.target.value).then(books => {
           if(!books || books.hasOwnProperty('error')) {
-            this.setState({ books: [] })
+            this.setState({ books: null });
           } else {
-              this.setState({ books: books })
+              this.setState({ books });
           }  
         })
       } else {
-        this.setState( { books: [] })
+        this.setState( { books: null });
       }
     }
 
-    onShelfChange = (book, shelf) => {
-      const newBooks = []
+    changeShelf = (book, shelf) => {
+      const newBooks = [];
       BooksAPI.update(book, shelf)
         .then(books => {
           Object.keys(books)
             .forEach(shelf => {
-              return books[shelf].map(id => ({ id: id, shelf: shelf}))
-              .forEach(book => {
-                newBooks.push(book)
-              })
-            })
-            return newBooks
-        })
-        .then(newBooks => {
-          this.setState({ currentBooks: newBooks })
+              return books[shelf].map(id => ({ id: id, shelf: shelf})).forEach(book => {
+                newBooks.push(book);
+              });
+            });
+            return newBooks;
+        }).then(newBooks => {
+          this.setState({ currentBooks: newBooks });
         })
     }
+    
  
     render() {
-        const { books, currentBooks } = this.state
-        let booksList
+      let booksList;
 
-        if (books.length > 0) {
-          booksList = books.map((book, index) => {
-            currentBooks.forEach(cbook => {
-              if(cbook.id === book.id) {
-                book.shelf = cbook.shelf
-              }
-            })
-
-            return (
-              <li key={index}>
-                <Book
-                  onShelfChange={this.onShelfChange}
-                  book={book} />
-              </li>
-            ) 
+      if (this.state.books.length > 0) {
+        booksList = this.state.books.map((book, index) => {
+          this.state.currentBooks.forEach(currentbook => {
+            if(currentbook.id === book.id) {
+              book.shelf = currentbook.shelf;
+            }
           })
-        } else {
-          booksList = null
-        }
 
-        return(
-            <div className="search-books">
-            <div className="search-books-bar">
-              <Link to="/" className="close-search">Close</Link>
-              <div className="search-books-input-wrapper">
-                <input 
-                  type="text" 
-                  onChange={this.onSearch}
-                  placeholder="Search by title or author"/>
-              </div>
-            </div>
-            <div className="search-books-results">
-              <ol className="books-grid">
-               {booksList}
-              </ol>
+          return (
+            <li key={index}>
+              <Book
+                changeShelf={this.changeShelf}
+                book={book} />
+            </li>
+          ) 
+        })
+      } else {
+        booksList = [];
+      }
+
+      return(
+          <div className="search-books">
+          <div className="search-books-bar">
+            <Link to="/" className="close-search">Close</Link>
+            <div className="search-books-input-wrapper">
+              <input 
+                type="text" 
+                onChange={this.search}
+                placeholder="Search by title or author"/>
             </div>
           </div>
-        )
+          <div className="search-books-results">
+            <ol className="books-grid">
+              {booksList}
+            </ol>
+          </div>
+        </div>
+      )
     }
 }
 
